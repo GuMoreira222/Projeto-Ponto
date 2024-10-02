@@ -70,6 +70,7 @@ def bater_ponto(user, password):
         hora = datetime.now()
         hora_formatada = hora.strftime("%H:%M")
         messagebox.showinfo("AVISO", f"Ponto batido às {hora_formatada}. Não esqueça de conferir seu espelho de ponto mais tarde!")
+        sleep(2)
 
     except TimeoutException as e:
         messagebox.showerror("ERRO", f"Tempo limite excedido: {e}")
