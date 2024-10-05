@@ -3,7 +3,7 @@ from tkinter import messagebox
 from dotenv import load_dotenv
 
 # Verifica se existe um caminho especificado
-def arquivo_existe(arq):
+def criar_arquivo(arq):
     if not os.path.exists(arq):
         try:
             file = open(arq, 'w')
