@@ -11,7 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, WebDriverException, NoSuchElementException
 import pyautogui
 from time import sleep
-from lib.tratar_txt import ler_arquivo
+from lib.tratar_env import retorna_env
 
 # Função que confirma se o usuário deseja bater o ponto
 def confirmacao():
@@ -38,34 +38,34 @@ def bater_ponto(user, password):
         opcoes = webdriver.ChromeOptions()
         opcoes.add_argument("--headless=new")
 
-        navegator = webdriver.Chrome(service=servico, options=opcoes)
+        driver = webdriver.Chrome(service=servico, options=opcoes)
 
-        navegator.get("http://sicoobsc139565.protheus.cloudtotvs.com.br:1404/meurh01/#/login")
-        navegator.maximize_window()
+        driver.get("http://sicoobsc139565.protheus.cloudtotvs.com.br:1404/meurh01/#/login")
+        driver.maximize_window()
 
         sleep(2)
-        campo_user = esperar_elemento_aparecer(navegator, By.XPATH, "/html/body/app-root/div/div/app-login/div[1]/div[1]/form/po-input/po-field-container/div/div[2]/input")
+        campo_user = esperar_elemento_aparecer(driver, By.XPATH, "/html/body/app-root/div/div/app-login/div[1]/div[1]/form/po-input/po-field-container/div/div[2]/input")
         campo_user.send_keys(user)
         sleep(2)
-        campo_senha = esperar_elemento_aparecer(navegator, By.XPATH, "/html/body/app-root/div/div/app-login/div[1]/div[1]/form/po-password/po-field-container/div/div[2]/input")
+        campo_senha = esperar_elemento_aparecer(driver, By.XPATH, "/html/body/app-root/div/div/app-login/div[1]/div[1]/form/po-password/po-field-container/div/div[2]/input")
         campo_senha.send_keys(password)
         sleep(2)
-        botao_entrar = esperar_elemento_clicavel(navegator, By.XPATH, "/html/body/app-root/div/div/app-login/div[1]/div[1]/form/po-button[1]/button")
+        botao_entrar = esperar_elemento_clicavel(driver, By.XPATH, "/html/body/app-root/div/div/app-login/div[1]/div[1]/form/po-button[1]/button")
         botao_entrar.click()
         sleep(2)
-        menu_ponto = esperar_elemento_aparecer(navegator, By.XPATH, "/html/body/app-root/div/div/div[2]/po-menu/div[2]/nav/div/div/div[3]/po-menu-item/div/div[1]")
+        menu_ponto = esperar_elemento_aparecer(driver, By.XPATH, "/html/body/app-root/div/div/div[2]/po-menu/div[2]/nav/div/div/div[3]/po-menu-item/div/div[1]")
         menu_ponto.click()
         sleep(2)
-        op_bater_ponto = esperar_elemento_clicavel(navegator, By.XPATH, "/html/body/app-root/div/div/div[2]/po-menu/div[2]/nav/div/div/div[3]/po-menu-item/div/div[2]/div[3]/po-menu-item/a/div")
+        op_bater_ponto = esperar_elemento_clicavel(driver, By.XPATH, "/html/body/app-root/div/div/div[2]/po-menu/div[2]/nav/div/div/div[3]/po-menu-item/div/div[2]/div[3]/po-menu-item/a/div")
         op_bater_ponto.click()
         sleep(2)
-        fechar_pop_up = esperar_elemento_clicavel(navegator, By.XPATH, "/html/body/app-root/div/div/div[2]/po-page-default/po-page/div/po-page-content/div/app-clocking-geo-register/po-modal[1]/div/div/div/div/div/div[2]/div/button")
+        fechar_pop_up = esperar_elemento_clicavel(driver, By.XPATH, "/html/body/app-root/div/div/div[2]/po-page-default/po-page/div/po-page-content/div/app-clocking-geo-register/po-modal[1]/div/div/div/div/div/div[2]/div/button")
         fechar_pop_up.click()
         sleep(2)
 
-        elemento = esperar_elemento_clicavel(navegator, By.XPATH, "/html/body/app-root/div/div/div[2]/po-page-default/po-page/div/po-page-content/div/app-clocking-geo-register/div/div[1]/div[1]/div/app-swipe-button/div/div/div/div")
-        acoes = ActionChains(navegator)
-        acoes.double_click(elemento).perform()
+        botao_ponto = esperar_elemento_clicavel(driver, By.XPATH, "/html/body/app-root/div/div/div[2]/po-page-default/po-page/div/po-page-content/div/app-clocking-geo-register/div/div[1]/div[1]/div/app-swipe-button/div/div/div/div")
+        acoes = ActionChains(driver)
+        acoes.double_click(botao_ponto).perform()
 
         hora = datetime.now()
         hora_formatada = hora.strftime("%H:%M")
@@ -79,7 +79,7 @@ def bater_ponto(user, password):
     except NoSuchElementException as e:
         messagebox.showerror("ERRO", f"Elemento não encontrado: {e}")
     except:
-        messagebox.showerror("ERRO", f"Erro desconhecido")
+        messagebox.showerror("ERRO", "Erro desconhecido")
 
 # Função que programa os horários para bater o ponto
 def programar_horario(login, lista_horas):
@@ -139,6 +139,6 @@ def programar_horario(login, lista_horas):
     except ValueError:
         messagebox.showerror("ERRO", "Erro na conversão ou comparação das datas")
 
-def iniciar_automacao(file_path):
-    login, lista_horas = ler_arquivo(file_path)
+def iniciar_automacao():
+    login, lista_horas = retorna_env()
     programar_horario(login, lista_horas)

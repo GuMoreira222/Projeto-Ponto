@@ -1,7 +1,7 @@
 from datetime import datetime
 import tkinter as tk
 from tkinter import messagebox
-from lib.tratar_txt import cadastrar
+from lib.tratar_env import cadastrar
 
 def validar_hora(hora_str):
     try:
@@ -16,7 +16,7 @@ def criar_interface():
     try:
         root = tk.Tk()
         root.title("Dados para cadastro")
-        root.geometry("250x300")
+        root.geometry("300x350")
 
         label_login = tk.Label(root, text="Usuário: ")
         label_login.grid(row=0, column=0, padx=10, pady=10)
